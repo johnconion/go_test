@@ -1,23 +1,11 @@
 package main
 
 var (
-	cols   = 5
-	rows   = cols
-	status = []int{
-		1, 0, 0, 1, 1,
-		0, 1, 0, 1, 0,
-		0, 0, 1, 1, 1,
-		0, 0, 0, 1, 0,
-		0, 0, 0, 0, 1,
-	}
+	cols = 20
+	rows = cols
 )
 
 func main() {
-
-	if len(status) != cols*rows {
-		println("要素が一致しません、設定し直してください")
-		return
-	}
 
 	splitLine()
 
@@ -25,7 +13,7 @@ func main() {
 		for j := 0; j < cols; j++ {
 			print("|")
 
-			openOrClose(status[i*cols+j])
+			print(" o ")
 
 			if j == cols-1 {
 				print("|")
@@ -42,12 +30,4 @@ func splitLine() {
 		print("-")
 	}
 	println("")
-}
-
-func openOrClose(status int) {
-	if status == 0 {
-		print(" x ")
-	} else {
-		print(" o ")
-	}
 }
