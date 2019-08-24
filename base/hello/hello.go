@@ -1,4 +1,4 @@
-package main
+package hello
 
 var (
 	cols   = 5
@@ -12,7 +12,7 @@ var (
 	}
 )
 
-func main() {
+func hello() {
 
 	if len(status) != cols*rows {
 		println("要素が一致しません、設定し直してください")
