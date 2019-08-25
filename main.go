@@ -1,30 +1,47 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"net"
 	"net/http"
-	"time"
+
+	"github.com/ant0ine/go-json-rest/rest"
 )
 
-func clockHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, `
-        <!DOCTYPE html>
-        <html>
-        <body>
-            %d時%d分%d秒ですよ！今！
-        </body>
-        </html>
-    `, time.Now().Hour(), time.Now().Minute(), time.Now().Second())
-}
-
 func main() {
-	//ディレクトリを指定する
-	// fs := http.FileServer(http.Dir("static"))
-	//ルーティング設定。"/"というアクセスがきたらstaticディレクトリのコンテンツを表示させる
-	http.HandleFunc("/", clockHandler)
 
-	log.Println("Listening...")
-	// 3000ポートでサーバーを立ち上げる
-	http.ListenAndServe(":3000", nil)
+	aaa := map[int]string{
+		0: "大吉",
+		1: "中吉",
+		2: "小吉",
+		3: "末吉",
+		4: "吉",
+		5: "凶",
+		6: "末凶",
+		7: "小凶",
+		8: "中凶",
+		9: "大凶",
+	}
+
+	api := rest.NewApi()
+	api.Use(rest.DefaultDevStack...)
+	router, err := rest.MakeRouter(
+		rest.Get("/lookup/#host", func(w rest.ResponseWriter, req *rest.Request) {
+			ip, err := net.LookupIP(req.PathParam("host"))
+			if err != nil {
+				rest.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			w.WriteJson(&ip)
+		}),
+		rest.Get("/seiya/#id", func(w rest.ResponseWriter, req *rest.Request) {
+			aaa[1] = req.PathParam("id")
+			w.WriteJson(aaa)
+		}),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	api.SetApp(router)
+	log.Fatal(http.ListenAndServe(":8383", api.MakeHandler()))
 }

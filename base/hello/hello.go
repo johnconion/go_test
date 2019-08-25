@@ -12,7 +12,7 @@ var (
 	}
 )
 
-func hello() {
+func Hello() {
 
 	if len(status) != cols*rows {
 		println("要素が一致しません、設定し直してください")
