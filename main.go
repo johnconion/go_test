@@ -39,7 +39,7 @@ type Result struct {
 
 func main() {
 
-	users := makeUsersData()
+	// users := makeUsersData()
 
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
