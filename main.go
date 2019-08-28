@@ -8,6 +8,10 @@ import (
 	"github.com/ant0ine/go-json-rest/rest"
 )
 
+type UsersData struct {
+	users []UserData
+}
+
 type UserData struct {
 	user_id int
 	name    string
@@ -39,10 +43,8 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8383", api.MakeHandler()))
 }
 
-func makeUsersData() map[int]UserData {
-	users := map[int]UserData{
-		0: UserData{1, "AA"},
-		1: UserData{2, "BB"},
+func makeUsersData() UsersData {
+	return UsersData{
+		[]UserData{UserData{0, "正也"}, UserData{1, "コシーニャ"}},
 	}
-	return users
 }
