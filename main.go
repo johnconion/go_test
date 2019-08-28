@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -38,7 +39,7 @@ type Result struct {
 
 func main() {
 
-	// users := makeUsersData()
+	users := makeUsersData()
 
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
@@ -52,7 +53,15 @@ func main() {
 			w.WriteJson(&ip)
 		}),
 		rest.Get("/seiya/#id", func(w rest.ResponseWriter, req *rest.Request) {
-			w.WriteJson(getJson())
+			jsonBytes := ([]byte)(getJson())
+			data := new(Result)
+
+			if err := json.Unmarshal(jsonBytes, data); err != nil {
+				fmt.Println("JSON Unmarshal error:", err)
+				return
+			}
+
+			w.WriteJson(data)
 		}),
 	)
 	if err != nil {
