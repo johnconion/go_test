@@ -9,8 +9,8 @@ import (
 )
 
 type UserData struct {
-	user_id    int
-	name       string
+	user_id int
+	name    string
 }
 
 func main() {
@@ -41,8 +41,8 @@ func main() {
 
 func makeUsersData() map[int]UserData {
 	users := map[int]UserData{
-		0:UserData{1,"AA"}
-		1:UserData{2,"BB"}
+		0: UserData{1, "AA"},
+		1: UserData{2, "BB"},
 	}
 	return users
 }
