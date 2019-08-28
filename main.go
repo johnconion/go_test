@@ -8,13 +8,30 @@ import (
 	"github.com/ant0ine/go-json-rest/rest"
 )
 
-type UsersData struct {
-	users []UserData
-}
-
-type UserData struct {
-	user_id int
-	name    string
+type Result struct {
+	Took     int  `json:"took"`
+	TimedOut bool `json:"timed_out"`
+	Shards   struct {
+		Total      int `json:"total"`
+		Successful int `json:"successful"`
+		Failed     int `json:"failed"`
+	} `json:"_shards"`
+	Hits struct {
+		Total    int     `json:"total"`
+		MaxScore float32 `json:"max_score"`
+		Hits     []struct {
+			Index  string  `json:"_index"`
+			Type   string  `json:"_type"`
+			Id     string  `json:"_id"`
+			Score  float32 `json:"_score"`
+			Source struct {
+				User    string `json:"user"`
+				Message string `json:"message"`
+				Date    string `json:"date"`
+				Likes   int    `json:"likes"`
+			} `json:"_source"`
+		} `json:"hits"`
+	} `json:"hits"`
 }
 
 func main() {
@@ -43,8 +60,19 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8383", api.MakeHandler()))
 }
 
-func makeUsersData() UsersData {
-	return UsersData{
-		[]UserData{UserData{0, "正也"}, UserData{1, "コシーニャ"}},
-	}
+func makeUsersData() Result {
+	var result Result
+
+	result.Took = 12
+
+	result.TimedOut = true
+
+	result.Shards.Total = 5
+	result.Shards.Successful = 1
+	result.Shards.Failed = 0
+
+	result.Hits.Total = 5
+	result.Hits.MaxScore = 300
+
+	return result
 }
