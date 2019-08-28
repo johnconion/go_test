@@ -8,20 +8,14 @@ import (
 	"github.com/ant0ine/go-json-rest/rest"
 )
 
+type UserData struct {
+	user_id    int
+	name       string
+}
+
 func main() {
 
-	aaa := map[int]string{
-		0: "大吉",
-		1: "中吉",
-		2: "小吉",
-		3: "末吉",
-		4: "吉",
-		5: "凶",
-		6: "末凶",
-		7: "小凶",
-		8: "中凶",
-		9: "大凶",
-	}
+	users := makeUsersData()
 
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
@@ -35,8 +29,7 @@ func main() {
 			w.WriteJson(&ip)
 		}),
 		rest.Get("/seiya/#id", func(w rest.ResponseWriter, req *rest.Request) {
-			aaa[1] = req.PathParam("id")
-			w.WriteJson(aaa)
+			w.WriteJson(users)
 		}),
 	)
 	if err != nil {
@@ -44,4 +37,12 @@ func main() {
 	}
 	api.SetApp(router)
 	log.Fatal(http.ListenAndServe(":8383", api.MakeHandler()))
+}
+
+func makeUsersData() map[int]UserData {
+	users := map[int]UserData{
+		0:UserData{1,"AA"}
+		1:UserData{2,"BB"}
+	}
+	return users
 }
